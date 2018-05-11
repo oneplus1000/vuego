@@ -1,6 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Dep } from '@/dep';
 import { LoginRespModel } from '@/model/login_resp_model';
+import router from '@/router';
 
 
 @Component
@@ -10,9 +11,20 @@ export default class Login extends Vue {
     private msg: string = '';
 
     private async onLogin() {
+        this.msg = '';
         const net = Dep.getNetSvc();
-        const json = await net.postJson(['api', 'login'], null);
-        debugger;
+        const json = await net.postJson(['api', 'login'], {
+            "username" : this.username,
+            "password" : this.password,
+        });
+        const loginResp = LoginRespModel.fromJson(json);
+        if (loginResp.result == 'OK') {
+            //login pass
+            router.push({ name: 'home' });
+        } else {
+            //login fail
+            this.msg = "login fail";
+        }
     }
 
     private async resp(response: any): Promise<LoginRespModel> {

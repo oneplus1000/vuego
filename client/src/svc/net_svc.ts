@@ -17,14 +17,19 @@ export class NetSvc {
     public postJson(paths: string[], data: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             let url = this.realUrl(paths);
-            fetch(url)
-                .then(async (resp) => { 
-                    let json = await resp.json();
-                    debugger;
-                    resolve(json);
-                }).catch((reason: any) => {
-                    reject(reason);
-                });
+            fetch(url,
+                {
+                    credentials: 'include',
+                    //credentials: "same-origin",
+                    method: "POST",
+                    body: JSON.stringify(data)
+                },
+            ).then(async (resp) => {
+                let json = await resp.json();
+                resolve(json);
+            }).catch((reason: any) => {
+                reject(reason);
+            });
         });
     }
 }
