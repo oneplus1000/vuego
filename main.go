@@ -17,7 +17,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 
 func setupXSS(w http.ResponseWriter) {
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 }
 
